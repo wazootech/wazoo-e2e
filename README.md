@@ -42,6 +42,21 @@ for (const result of results) {
 
 Outside Playwright, use `createFetchClient()` for a plain `fetch`-backed client.
 
+## Live QA smoke gate
+
+`npm run smoke` builds the package and runs the full suite against the environment from
+`API_BASE_URL` / `WORLDS_API_URL` (defaults to `https://api-qa.wazoo.dev` /
+`https://worlds-api-qa.wazoo.dev`), using `WAZOO_PLATFORM_ADMIN_TOKEN` for admin auth.
+It exits non-zero on any assertion failure, so it can be wired into CI as a cross-repo
+gate:
+
+```sh
+API_BASE_URL=https://api-qa.wazoo.dev \
+WORLDS_API_URL=https://worlds-api-qa.wazoo.dev \
+WAZOO_PLATFORM_ADMIN_TOKEN=wzp_... \
+npm run smoke
+```
+
 ## Development
 
 ```sh

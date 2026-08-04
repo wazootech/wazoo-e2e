@@ -15,6 +15,10 @@ them.
   `AssertionResult { name, passed, detail }`.
 - Add a vitest unit test per assertion using a mock client — no live environment
   required.
+- `npm run smoke` is the live QA smoke gate: it builds the package and runs the full
+  suite against the environment from `API_BASE_URL` / `WORLDS_API_URL` (defaults to QA)
+  using `WAZOO_PLATFORM_ADMIN_TOKEN`. Keep it green before merging changes to assertion
+  flows.
 - Use `package.json` scripts as the source of truth for build, test, typecheck, and
   formatting commands.
 - Run `npm run typecheck`, `npm test`, and `npm run format:check` for code changes. Run
