@@ -1,0 +1,44 @@
+{
+  "name": "wazoo-e2e",
+  "version": "0.0.0",
+  "description": "Reusable end-to-end integration and smoke test assertion flows for the Wazoo platform (world lifecycle, token management, SPARQL queries).",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wazootech/wazoo-e2e.git"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "npm run build",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json --noEmit"
+  },
+  "keywords": [
+    "wazoo",
+    "e2e",
+    "testing",
+    "assertions",
+    "sparql",
+    "worlds"
+  ],
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "prettier": "^3.9.5",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}
