@@ -3,18 +3,19 @@
 ## What this repo is
 
 Reusable end-to-end integration and smoke test assertion flows for the Wazoo platform:
-world lifecycle, world auth token management, and SPARQL query round-trips. Consumers
-(wazoo-console e2e specs, QA gates, scripts) import these flows instead of duplicating
-them.
+world lifecycle, world auth token management, SPARQL query round-trips, and prod-health
+smoke checks. Consumers (wazoo-console e2e specs, QA gates, scripts) import these flows
+instead of duplicating them.
 
 ## How to work here
 
 - Keep assertions framework-agnostic: they operate on the minimal `E2eClient` interface
-  in `src/client.ts`, not on Playwright/vitest primitives.
+  in `src/client.ts`, not on Playwright/vitest primitives. Browser-based checks use the
+  structural `PageLike` interface in `src/assertions/console-landing-page.ts`.
 - One flow per file under `src/assertions/`, named `test<Thing>()`, returning
   `AssertionResult { name, passed, detail }`.
-- Add a vitest unit test per assertion using a mock client — no live environment
-  required.
+- Add a vitest unit test per assertion using a mock client (or mock page for
+  `testConsoleLandingPage`) — no live environment required.
 - `npm run smoke` is the live QA smoke gate: it builds the package and runs the full
   suite against the environment from `API_BASE_URL` / `WORLDS_API_URL` (defaults to QA)
   using `WAZOO_PLATFORM_ADMIN_TOKEN`. Keep it green before merging changes to assertion

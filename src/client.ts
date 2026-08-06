@@ -6,6 +6,12 @@
 export interface RequestOptions {
   headers?: Record<string, string>
   data?: unknown
+  /**
+   * Maximum redirects to follow. `0` disables following so the raw 3xx
+   * response is returned (used by redirect assertions). Only `0` is honored
+   * by the fetch-based client; Playwright supports arbitrary values.
+   */
+  maxRedirects?: number
 }
 
 export interface E2eResponse {
@@ -24,15 +30,27 @@ export interface E2eClient {
 export interface PlaywrightRequestLike {
   get(
     url: string,
-    options?: { headers?: Record<string, string>; data?: unknown },
+    options?: {
+      headers?: Record<string, string>
+      data?: unknown
+      maxRedirects?: number
+    },
   ): Promise<PlaywrightResponseLike>
   post(
     url: string,
-    options?: { headers?: Record<string, string>; data?: unknown },
+    options?: {
+      headers?: Record<string, string>
+      data?: unknown
+      maxRedirects?: number
+    },
   ): Promise<PlaywrightResponseLike>
   delete(
     url: string,
-    options?: { headers?: Record<string, string>; data?: unknown },
+    options?: {
+      headers?: Record<string, string>
+      data?: unknown
+      maxRedirects?: number
+    },
   ): Promise<PlaywrightResponseLike>
 }
 
@@ -79,6 +97,9 @@ export function createFetchClient(baseUrl = ""): E2eClient {
     }
     const init: RequestInit = { method, headers }
     if (body !== undefined) init.body = body
+    // fetch cannot cap redirects at an arbitrary count; 0 maps to "manual",
+    // which returns the raw 3xx response without following it.
+    if (options?.maxRedirects === 0) init.redirect = "manual"
     const response = await fetch(`${baseUrl}${url}`, init)
     return {
       status: response.status,
