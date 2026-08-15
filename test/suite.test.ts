@@ -29,7 +29,7 @@ function happyClient(): E2eClient {
         ? response(200, { results: { bindings } })
         : url.includes("/auth/tokens")
           ? response(201, { token: { token: "wzt_test_secret_123" } })
-          : response(201, { world: { state: "ACTIVE" } }),
+          : response(201, { world: { state: "ACTIVE", worldUid: "w_test_uid" } }),
     delete: async () => response(200),
   }
 }

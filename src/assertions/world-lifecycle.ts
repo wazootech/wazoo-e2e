@@ -41,7 +41,9 @@ export async function testWorldLifecycle(
         detail: `create world: expected 201, got ${createRes.status}`,
       }
     }
-    const created = await createRes.json<{ world: { state: string } }>()
+    const created = await createRes.json<{
+      world: { state: string; worldUid?: string }
+    }>()
     if (created.world.state !== "ACTIVE") {
       return {
         name: "testWorldLifecycle",
@@ -49,6 +51,9 @@ export async function testWorldLifecycle(
         detail: `create world: expected state ACTIVE, got ${created.world.state}`,
       }
     }
+    // The data plane (worlds-api) addresses worlds by their `w_...` uid,
+    // not the wazoo-api slug; capture it for downstream SPARQL calls.
+    if (created.world?.worldUid) context.worldUid = created.world.worldUid
     return {
       name: "testWorldLifecycle",
       passed: true,

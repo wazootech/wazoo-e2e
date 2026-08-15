@@ -18,7 +18,13 @@ function makeClient(routes: {
   return {
     get: async () => (routes.usersMe ?? (() => response(200)))(),
     post: async () =>
-      (routes.createWorld ?? (() => response(201, { world: { state: "ACTIVE" } })))(),
+      (
+        routes.createWorld ??
+        (() =>
+          response(201, {
+            world: { state: "ACTIVE", worldUid: "w_test_uid" },
+          }))
+      )(),
     delete: async () => response(200),
   }
 }
@@ -36,6 +42,7 @@ describe("testWorldLifecycle", () => {
     const result = await testWorldLifecycle(context)
     expect(result.passed).toBe(true)
     expect(result.detail).toContain("ACTIVE")
+    expect(context.worldUid).toBe("w_test_uid")
   })
 
   it("fails when the owner user cannot be resolved", async () => {
