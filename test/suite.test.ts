@@ -76,7 +76,8 @@ describe("runWorldLifecycleSuite", () => {
     const client: E2eClient = {
       get: async () => response(200),
       post: async () => response(201, { world: { state: "ACTIVE" } }),
-      delete: async () => response(404),    }
+      delete: async () => response(404),
+    }
     const context = createWorldContext(client, baseConfig)
     const results = await runWorldLifecycleSuite(context)
     expect(results[3]).toMatchObject({ name: "cleanupWorld", passed: true })

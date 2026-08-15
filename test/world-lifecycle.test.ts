@@ -18,11 +18,13 @@ function makeClient(routes: {
   return {
     get: async () => (routes.usersMe ?? (() => response(200)))(),
     post: async () =>
-      (routes.createWorld ??
+      (
+        routes.createWorld ??
         (() =>
           response(201, {
             world: { state: "ACTIVE", worldUid: "w_test_uid" },
-          })))(),
+          }))
+      )(),
     delete: async () => response(200),
   }
 }
