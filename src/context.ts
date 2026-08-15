@@ -17,6 +17,8 @@ export interface WorldE2EContext {
   runId: string
   slug: string
   ownerEmail: string
+  /** worlds-api uid (`w_...`) of the created world, for data-plane calls. */
+  worldUid?: string
   worldToken?: string
 }
 

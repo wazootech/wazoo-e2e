@@ -35,9 +35,12 @@ export async function testSparqlQuery(
     "Content-Type": "application/json",
   }
   try {
+    // worlds-api resolves worlds by their canonical `w_...` uid, not the
+    // wazoo-api slug; fall back to the slug only when no uid was captured.
+    const worldId = context.worldUid ?? slug
     // ── Step 1: SPARQL INSERT DATA ──
     const insertRes = await client.post(
-      `${config.worldsApiUrl}/worlds/${slug}/sparql`,
+      `${config.worldsApiUrl}/worlds/${worldId}/sparql`,
       { headers, data: { query: INSERT_QUERY } },
     )
     if (insertRes.status !== 200) {
@@ -50,7 +53,7 @@ export async function testSparqlQuery(
 
     // ── Step 2: SPARQL SELECT and verify ──
     const selectRes = await client.post(
-      `${config.worldsApiUrl}/worlds/${slug}/sparql`,
+      `${config.worldsApiUrl}/worlds/${worldId}/sparql`,
       { headers, data: { query: SELECT_QUERY } },
     )
     if (selectRes.status !== 200) {

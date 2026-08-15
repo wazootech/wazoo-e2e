@@ -43,6 +43,7 @@ describe("testSparqlQuery", () => {
   it("passes on a full insert + select round trip", async () => {
     const client = makeClient({})
     const context = createWorldContext(client, baseConfig)
+    context.worldUid = "w_test_uid"
     context.worldToken = "wzt_test_secret_123"
     const result = await testSparqlQuery(context)
     expect(result.passed).toBe(true)
@@ -51,6 +52,7 @@ describe("testSparqlQuery", () => {
   it("fails without a world token", async () => {
     const client = makeClient({})
     const context = createWorldContext(client, baseConfig)
+    context.worldUid = "w_test_uid"
     const result = await testSparqlQuery(context)
     expect(result.passed).toBe(false)
     expect(result.detail).toContain("world token")
@@ -59,6 +61,7 @@ describe("testSparqlQuery", () => {
   it("fails when the insert is rejected", async () => {
     const client = makeClient({ insert: () => response(500) })
     const context = createWorldContext(client, baseConfig)
+    context.worldUid = "w_test_uid"
     context.worldToken = "wzt_test_secret_123"
     const result = await testSparqlQuery(context)
     expect(result.passed).toBe(false)
@@ -70,6 +73,7 @@ describe("testSparqlQuery", () => {
       select: () => response(200, { results: { bindings: [] } }),
     })
     const context = createWorldContext(client, baseConfig)
+    context.worldUid = "w_test_uid"
     context.worldToken = "wzt_test_secret_123"
     const result = await testSparqlQuery(context)
     expect(result.passed).toBe(false)

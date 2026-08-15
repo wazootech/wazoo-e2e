@@ -29,7 +29,7 @@ function happyClient(): E2eClient {
         ? response(200, { results: { bindings } })
         : url.includes("/auth/tokens")
           ? response(201, { token: { token: "wzt_test_secret_123" } })
-          : response(201, { world: { state: "ACTIVE" } }),
+          : response(201, { world: { state: "ACTIVE", worldUid: "w_test_uid" } }),
     delete: async () => response(200),
   }
 }
@@ -76,8 +76,7 @@ describe("runWorldLifecycleSuite", () => {
     const client: E2eClient = {
       get: async () => response(200),
       post: async () => response(201, { world: { state: "ACTIVE" } }),
-      delete: async () => response(404),
-    }
+      delete: async () => response(404),    }
     const context = createWorldContext(client, baseConfig)
     const results = await runWorldLifecycleSuite(context)
     expect(results[3]).toMatchObject({ name: "cleanupWorld", passed: true })
